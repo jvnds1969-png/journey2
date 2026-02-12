@@ -1,0 +1,97 @@
+/* Professionelere look voor zorgplan */
+
+.plan-card {
+  margin-top: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dde2ee;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  padding: 16px 18px 18px;
+}
+
+.tab-header {
+  display: inline-flex;
+  border-radius: 999px;
+  background: #f3f4f6;
+  padding: 2px;
+  margin-bottom: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.tab-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(148, 163, 184, 0.6);
+  color: #111827;
+}
+
+.plan-section {
+  display: none;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.plan-section.active {
+  display: block;
+}
+
+.plan-block {
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #edf0f7;
+}
+
+.plan-block:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.plan-block h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.plan-block p {
+  margin: 0 0 6px;
+  color: #4b5563;
+}
+
+.plan-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.plan-list li {
+  margin-bottom: 4px;
+}
+
+.pill-small {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+}
+
+.section-intro {
+  font-size: 12px;
+  color: #6b7280;
+}
