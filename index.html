@@ -1,4 +1,463 @@
-<div class="plan-card">
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Zorgstart – Journey & Zorgplan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --bg-alt: #ffffff;
+      --border: #e0e4f0;
+      --accent: #ff6b6b;
+      --accent-soft: rgba(255, 107, 107, 0.08);
+      --accent-2: #4c6fff;
+      --text-main: #1e2433;
+      --text-muted: #6f7690;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 14px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    * , *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #ffffff 0, #f6f7fb 55%, #edf0f8 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent-2); text-decoration: none; }
+
+    /* Layout */
+
+    .page {
+      max-width: 1040px;
+      margin: 0 auto 48px;
+      padding: 16px 16px 40px;
+    }
+
+    /* Hero */
+
+    .hero {
+      margin-bottom: 20px;
+      padding: 18px 18px 20px;
+      border-radius: 18px;
+      background: var(--bg-alt);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: #f9fafb;
+    }
+
+    .hero h1 {
+      margin: 10px 0 6px;
+      font-size: clamp(22px, 3.3vw, 28px);
+      letter-spacing: -0.03em;
+    }
+
+    .hero-lead {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 520px;
+    }
+
+    .hero-meta {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      background: var(--accent-soft);
+      color: #b63c3c;
+    }
+
+    .chip-soft {
+      background: #edf1ff;
+      color: #4252c7;
+    }
+
+    /* Sections */
+
+    section {
+      margin-top: 22px;
+    }
+
+    h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro {
+      margin: 0 0 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Journey (timeline light) */
+
+    .journey-card {
+      background: var(--bg-alt);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 16px;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 2fr);
+      gap: 16px;
+    }
+
+    .journey-left h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+
+    .journey-left p {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .pill-strip {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #f9fafb;
+    }
+
+    .timeline {
+      margin-top: 10px;
+      border-top: 1px dashed #d4d7e5;
+      padding-top: 10px;
+    }
+
+    .timeline-step {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .timeline-step:last-child { margin-bottom: 0; }
+
+    .step-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 2px solid var(--accent-2);
+      background: #ffffff;
+      margin-top: 4px;
+    }
+
+    .step-body h4 {
+      margin: 0 0 2px;
+      font-size: 13px;
+    }
+
+    .step-body p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Zorgstart side panel */
+
+    .journey-right {
+      border-radius: 14px;
+      border: 1px dashed #d4d7e5;
+      background: #f9fafc;
+      padding: 10px 12px 12px;
+      font-size: 12px;
+    }
+
+    .journey-right-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      color: #334155;
+    }
+
+    .badge-soft {
+      display: inline-flex;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 10px;
+      margin-left: 4px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 4px 0 8px;
+    }
+
+    .tag {
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    .subheading {
+      font-size: 11px;
+      font-weight: 600;
+      margin: 6px 0 4px;
+      color: #4b5563;
+    }
+
+    .mini-list {
+      margin: 0;
+      padding-left: 14px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* Zorgplan tabs */
+
+    .plan-card {
+      margin-top: 10px;
+      background: var(--bg-alt);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 16px;
+    }
+
+    .tab-header {
+      display: inline-flex;
+      border-radius: var(--radius-pill);
+      background: #eef0f8;
+      padding: 3px;
+      margin-bottom: 10px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      cursor: pointer;
+      color: #4b5563;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      box-shadow: 0 1px 4px rgba(148, 163, 184, 0.6);
+      color: #111827;
+    }
+
+    .plan-section {
+      display: none;
+      font-size: 13px;
+    }
+
+    .plan-section.active { display: block; }
+
+    .plan-block {
+      margin-bottom: 10px;
+    }
+
+    .plan-block h3 {
+      margin: 0 0 4px;
+      font-size: 14px;
+    }
+
+    .plan-block p {
+      margin: 0 0 4px;
+      color: var(--text-muted);
+    }
+
+    .plan-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .pill-small {
+      display: inline-flex;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 768px) {
+      .journey-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-badge">Zorgstart – Journey & Zorgplan</div>
+    <h1>Van heupfractuur naar veilig thuis</h1>
+    <p class="hero-lead">
+      Journey van een 68‑jarige alleenwonende patiënt, gekoppeld aan wat Zorgstart onder de motorkap doet en welk zorgplan daaruit rolt.
+    </p>
+    <div class="hero-meta">
+      <span class="chip">Heupfractuur & diabetes</span>
+      <span class="chip chip-soft">Valrisico · Wondzorg · Thuiszorg</span>
+    </div>
+  </header>
+
+  <!-- Journey -->
+  <section>
+    <h2>1. Journey van de patiënt</h2>
+    <p class="section-intro">
+      Patiënt: 68 jaar, alleenwonend, diabetes niet op punt, roker, BMI 27,5. Valt thuis, heupfractuur, wordt geopereerd en al op dag 3 ontslagen.
+    </p>
+
+    <div class="journey-card">
+      <div class="journey-grid">
+        <!-- Links: wat patiënt beleeft -->
+        <div class="journey-left">
+          <h3>Wat de patiënt meemaakt</h3>
+          <p>
+            Hij voelt vooral pijn, onzekerheid en de vraag: “Kan ik dit thuis alleen aan?”
+          </p>
+
+          <div class="pill-strip">
+            <span class="pill">Alleenwonend</span>
+            <span class="pill">Kinderen op afstand</span>
+            <span class="pill">Heupfractuur + operatie</span>
+            <span class="pill">Diabetes & roken</span>
+          </div>
+
+          <div class="timeline">
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 0 – Spoed & opname</h4>
+                <p>Val thuis, veel pijn in de heup. Op spoed wordt een heupfractuur vastgesteld en beslist men voor een operatie.</p>
+              </div>
+            </div>
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 1 – Na de operatie</h4>
+                <p>Hij wordt wakker met pijn, hoort dat hij zo snel mogelijk met een rollator moet bewegen. De wonde geneest moeizaam, diabetes en roken spelen mee.</p>
+              </div>
+            </div>
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 2 – Revalidatie & gesprekken</h4>
+                <p>Kinesist en verpleegkundige oefenen voorzichtig stappen. Sociaal werker vraagt naar thuissituatie; hij maakt zich zorgen of hij het thuis redt.</p>
+              </div>
+            </div>
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 3 – Ontslag</h4>
+                <p>Hij hoort dat hij al naar huis mag. Hij hoopt dat er genoeg hulp is voor wondzorg, stappen met rollator en opvolging van suiker en medicatie.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Rechts: wat Zorgstart doet -->
+        <aside class="journey-right">
+          <p class="journey-right-title">
+            Wat Zorgstart op de achtergrond doet
+            <span class="badge-soft">Van documenten naar plan</span>
+          </p>
+
+          <div class="subheading">1. Documenten & data binnenhalen</div>
+          <ul class="mini-list">
+            <li>Ontslagbrief, operatieverslag, eerdere diabetologie‑brieven en verpleegkundige info worden opgeladen.</li>
+            <li>OnePatient/Bingli scraped diagnosen, medicatie, BMI, roken, valincident, wondproblemen.</li>
+          </ul>
+
+          <div class="subheading">2. Probleemgebieden (16‑model)</div>
+          <div class="tag-row">
+            <span class="tag">Valrisico & mobiliteit</span>
+            <span class="tag">ADL & wonen</span>
+            <span class="tag">Wondzorg</span>
+            <span class="tag">Diabetes / metabool</span>
+            <span class="tag">Leefstijl (roken)</span>
+            <span class="tag">Medicatie & therapietrouw</span>
+            <span class="tag">Netwerk alleenwonende</span>
+          </div>
+
+          <div class="subheading">3. Zorgbundels kiezen</div>
+          <ul class="mini-list">
+            <li>Heupfractuur thuisrevalidatie + valpreventie</li>
+            <li>Complexe wondzorg bij diabetes</li>
+            <li>Diabetesregie + leefstijl na opname</li>
+            <li>Woning & zelfredzaamheid alleenwonende 65+</li>
+            <li>Netwerk rond alleenwonende versterken</li>
+          </ul>
+
+          <div class="subheading">4. Taken & zorgverleners</div>
+          <ul class="mini-list">
+            <li>Kinesist, ergotherapeut, thuisverpleging, huisarts, diabetesteam, hulpmiddelenleverancier, sociale dienst…</li>
+            <li>Elke bundel wordt omgezet in concrete taken met wie/wat/wanneer.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zorgplan -->
+  <section>
+    <h2>2. Zorgplan dat Zorgstart oplevert</h2>
+    <p class="section-intro">
+      Eén keer denken in probleemgebieden en zorgbundels, twee weergaven: een professioneel plan en een begrijpelijke uitleg voor de patiënt en zijn kinderen.
+    </p>
+
+    <div class="plan-card">
   <div class="tab-header">
     <button class="tab-btn active" data-tab="pro">Voor professionals</button>
     <button class="tab-btn" data-tab="pat">Voor de patiënt</button>
@@ -184,3 +643,22 @@
     </div>
   </div>
 </div>
+
+
+<script>
+  const buttons = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('.plan-section');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById('tab-' + btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
