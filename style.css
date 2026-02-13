@@ -1,97 +1,722 @@
-/* Professionelere look voor zorgplan */
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Zorgstart – Journey & Zorgplan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --bg-alt: #ffffff;
+      --border: #e0e4f0;
+      --accent: #ff6b6b;
+      --accent-soft: rgba(255, 107, 107, 0.08);
+      --accent-2: #4c6fff;
+      --text-main: #1e2433;
+      --text-muted: #6f7690;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 14px 40px rgba(15, 23, 42, 0.08);
+    }
 
-.plan-card {
-  margin-top: 16px;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #dde2ee;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-  padding: 16px 18px 18px;
-}
+    * , *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
 
-.tab-header {
-  display: inline-flex;
-  border-radius: 999px;
-  background: #f3f4f6;
-  padding: 2px;
-  margin-bottom: 14px;
-  border: 1px solid #e5e7eb;
-}
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #ffffff 0, #f6f7fb 55%, #edf0f8 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
 
-.tab-btn {
-  border: none;
-  background: transparent;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  cursor: pointer;
-  color: #4b5563;
-  font-weight: 500;
-}
+    a { color: var(--accent-2); text-decoration: none; }
 
-.tab-btn.active {
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(148, 163, 184, 0.6);
-  color: #111827;
-}
+    .page {
+      max-width: 1040px;
+      margin: 0 auto 48px;
+      padding: 16px 16px 40px;
+    }
 
-.plan-section {
-  display: none;
-  font-size: 13px;
-  line-height: 1.45;
-}
+    .hero {
+      margin-bottom: 20px;
+      padding: 18px 18px 20px;
+      border-radius: 18px;
+      background: var(--bg-alt);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border);
+    }
 
-.plan-section.active {
-  display: block;
-}
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: #f9fafb;
+    }
 
-.plan-block {
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #edf0f7;
-}
+    .hero h1 {
+      margin: 10px 0 6px;
+      font-size: clamp(22px, 3.3vw, 28px);
+      letter-spacing: -0.03em;
+    }
 
-.plan-block:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
-}
+    .hero-lead {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 520px;
+    }
 
-.plan-block h3 {
-  margin: 0 0 4px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #111827;
-}
+    .hero-meta {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
 
-.plan-block p {
-  margin: 0 0 6px;
-  color: #4b5563;
-}
+    .chip {
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      background: var(--accent-soft);
+      color: #b63c3c;
+    }
 
-.plan-list {
-  margin: 0;
-  padding-left: 16px;
-  font-size: 12px;
-  color: #374151;
-}
+    .chip-soft {
+      background: #edf1ff;
+      color: #4252c7;
+    }
 
-.plan-list li {
-  margin-bottom: 4px;
-}
+    section {
+      margin-top: 22px;
+    }
 
-.pill-small {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 10px;
-  background: #f3f4f6;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
-}
+    h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
 
-.section-intro {
-  font-size: 12px;
-  color: #6b7280;
-}
+    .section-intro {
+      margin: 0 0 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .journey-card {
+      background: var(--bg-alt);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 16px;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 2fr);
+      gap: 16px;
+    }
+
+    .journey-left h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+
+    .journey-left p {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .pill-strip {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #f9fafb;
+    }
+
+    .timeline {
+      margin-top: 10px;
+      border-top: 1px dashed #d4d7e5;
+      padding-top: 10px;
+    }
+
+    .timeline-step {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .timeline-step:last-child { margin-bottom: 0; }
+
+    .step-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 2px solid var(--accent-2);
+      background: #ffffff;
+      margin-top: 4px;
+    }
+
+    .step-body h4 {
+      margin: 0 0 2px;
+      font-size: 13px;
+    }
+
+    .step-body p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .journey-right {
+      border-radius: 14px;
+      border: 1px dashed #d4d7e5;
+      background: #f9fafc;
+      padding: 10px 12px 12px;
+      font-size: 12px;
+    }
+
+    .journey-right-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      color: #334155;
+    }
+
+    .badge-soft {
+      display: inline-flex;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 10px;
+      margin-left: 4px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 4px 0 8px;
+    }
+
+    .tag {
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    .subheading {
+      font-size: 11px;
+      font-weight: 600;
+      margin: 6px 0 4px;
+      color: #4b5563;
+    }
+
+    .mini-list {
+      margin: 0;
+      padding-left: 14px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .plan-card {
+      margin-top: 10px;
+      background: var(--bg-alt);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 16px;
+    }
+
+    .tab-header {
+      display: inline-flex;
+      border-radius: var(--radius-pill);
+      background: #eef0f8;
+      padding: 3px;
+      margin-bottom: 10px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      cursor: pointer;
+      color: #4b5563;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      box-shadow: 0 1px 4px rgba(148, 163, 184, 0.6);
+      color: #111827;
+    }
+
+    .plan-section {
+      display: none;
+      font-size: 13px;
+    }
+
+    .plan-section.active { display: block; }
+
+    .plan-block {
+      margin-bottom: 10px;
+    }
+
+    .plan-block h3 {
+      margin: 0 0 4px;
+      font-size: 14px;
+    }
+
+    .plan-block p {
+      margin: 0 0 4px;
+      color: var(--text-muted);
+    }
+
+    .plan-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .pill-small {
+      display: inline-flex;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 768px) {
+      .journey-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="hero">
+    <div class="hero-badge">Zorgstart – Journey & Zorgplan</div>
+    <h1>Van heupfractuur naar veilig thuis</h1>
+    <p class="hero-lead">
+      Journey van een 68‑jarige alleenwonende patiënt, gekoppeld aan wat Zorgstart onder de motorkap doet en welk zorgplan daaruit rolt.
+    </p>
+    <div class="hero-meta">
+      <span class="chip">Heupfractuur &amp; diabetes</span>
+      <span class="chip chip-soft">Valrisico · Wondzorg · Thuiszorg</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. Journey van de patiënt</h2>
+    <p class="section-intro">
+      Patiënt: 68 jaar, alleenwonend, diabetes niet op punt, roker, BMI 27,5. Valt thuis, heupfractuur, wordt geopereerd en al op dag 3 ontslagen.
+    </p>
+
+    <div class="journey-card">
+      <div class="journey-grid">
+        <div class="journey-left">
+          <h3>Wat de patiënt meemaakt</h3>
+          <p>
+            Hij voelt vooral pijn, onzekerheid en de vraag: “Kan ik dit thuis alleen aan?”
+          </p>
+
+          <div class="pill-strip">
+            <span class="pill">Alleenwonend</span>
+            <span class="pill">Kinderen op afstand</span>
+            <span class="pill">Heupfractuur + operatie</span>
+            <span class="pill">Diabetes &amp; roken</span>
+          </div>
+
+          <div class="timeline">
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 0 – Spoed &amp; opname</h4>
+                <p>Val thuis, veel pijn in de heup. Op spoed wordt een heupfractuur vastgesteld en beslist men voor een operatie.</p>
+              </div>
+            </div>
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 1 – Na de operatie</h4>
+                <p>Hij wordt wakker met pijn, hoort dat hij zo snel mogelijk met een rollator moet bewegen. De wonde geneest moeizaam, diabetes en roken spelen mee.</p>
+              </div>
+            </div>
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 2 – Revalidatie &amp; gesprekken</h4>
+                <p>Kinesist en verpleegkundige oefenen voorzichtig stappen. Sociaal werker vraagt naar thuissituatie; hij maakt zich zorgen of hij het thuis redt.</p>
+              </div>
+            </div>
+
+            <div class="timeline-step">
+              <div class="step-dot"></div>
+              <div class="step-body">
+                <h4>Dag 3 – Ontslag</h4>
+                <p>Hij hoort dat hij al naar huis mag. Hij hoopt dat er genoeg hulp is voor wondzorg, stappen met rollator en opvolging van suiker en medicatie.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <aside class="journey-right">
+          <p class="journey-right-title">
+            Wat Zorgstart op de achtergrond doet
+            <span class="badge-soft">Van documenten naar plan</span>
+          </p>
+
+          <div class="subheading">1. Documenten &amp; data binnenhalen</div>
+          <ul class="mini-list">
+            <li>Ontslagbrief, operatieverslag, eerdere diabetologie‑brieven en verpleegkundige info worden opgeladen.</li>
+            <li>OnePatient/Bingli scraped diagnosen, medicatie, BMI, roken, valincident, wondproblemen.</li>
+          </ul>
+
+          <div class="subheading">2. Probleemgebieden (16‑model)</div>
+          <div class="tag-row">
+            <span class="tag">Valrisico &amp; mobiliteit</span>
+            <span class="tag">ADL &amp; wonen</span>
+            <span class="tag">Wondzorg</span>
+            <span class="tag">Diabetes / metabool</span>
+            <span class="tag">Leefstijl (roken)</span>
+            <span class="tag">Medicatie &amp; therapietrouw</span>
+            <span class="tag">Netwerk alleenwonende</span>
+          </div>
+
+          <div class="subheading">3. Zorgbundels kiezen</div>
+          <ul class="mini-list">
+            <li>Heupfractuur thuisrevalidatie + valpreventie.</li>
+            <li>Complexe wondzorg bij diabetes.</li>
+            <li>Diabetesregie + leefstijl na opname.</li>
+            <li>Woning &amp; zelfredzaamheid alleenwonende 65+.</li>
+            <li>Netwerk rond alleenwonende versterken.</li>
+          </ul>
+
+          <div class="subheading">4. Taken &amp; zorgverleners</div>
+          <ul class="mini-list">
+            <li>Kinesist, ergotherapeut, thuisverpleging, huisarts, diabetesteam, hulpmiddelenleverancier, sociale dienst…</li>
+            <li>Elke bundel wordt omgezet in concrete taken met wie/wat/wanneer.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Zorgplan dat Zorgstart oplevert</h2>
+    <p class="section-intro">
+      Eén keer denken in probleemgebieden en zorgbundels, twee weergaven: een professioneel plan en een begrijpelijke uitleg voor de patiënt en zijn kinderen.
+    </p>
+
+    <div class="plan-card">
+      <div class="tab-header">
+        <button class="tab-btn active" data-tab="pro">Voor professionals</button>
+        <button class="tab-btn" data-tab="pat">Voor de patiënt</button>
+      </div>
+
+      <div class="plan-section active" id="tab-pro">
+
+        <div class="plan-block">
+          <h3>0. Patiënt- en contextgegevens</h3>
+          <ul class="plan-list">
+            <li><strong>Patiënt</strong>: [Naam patiënt], [Geboortedatum], [Rijksregisternr. / ID], [Adres].</li>
+            <li><strong>Huisarts</strong>: [Naam HA], [RIZIV-nummer], [Contactgegevens].</li>
+            <li><strong>Bestaande zorgverleners aan huis</strong>: [Thuisverpleging X], [Poetshulp Y], [Andere...].</li>
+            <li><strong>Behandelend specialist (huidige opname)</strong>: [Naam orthopedist / geriater / specialist], [Ziekenhuis / dienst].</li>
+            <li><strong>Datum ontslag</strong>: [DD/MM/JJJJ] – <strong>Settings</strong>: Thuis na opname voor heupfractuur.</li>
+          </ul>
+          <p class="section-intro">
+            Deze gegevens worden automatisch ingevuld vanuit het EPD en bestaande Zorgstart‑koppelingen, en kunnen door de zorgcoördinator gevalideerd worden.
+          </p>
+        </div>
+
+        <div class="plan-block">
+          <h3>1. Probleemgebieden</h3>
+          <p>Afgeleid uit gescrapete ontslagbrief, operatieverslag, eerdere brieven en verpleegkundige observaties (lexicon 16 probleemgebieden).</p>
+          <ul class="plan-list">
+            <li><strong>Heupfractuur – postoperatief</strong>, mobiliteit ernstig beperkt, rollator vereist.</li>
+            <li><strong>Valrisico hoog</strong>: recente val, angst, onstabiel stappen.</li>
+            <li><strong>ADL &amp; wonen</strong>: hulp nodig bij transfers en zelfzorg, kleine badkamer.</li>
+            <li><strong>Wondzorg</strong>: moeizame wondgenezing, diabetes + roken als risicofactoren.</li>
+            <li><strong>Diabetes / metabool</strong>: regeling niet op punt, therapietrouw discutabel.</li>
+            <li><strong>Leefstijl</strong>: roker, BMI 27,5.</li>
+            <li><strong>Netwerk</strong>: alleenwonend, kinderen op &gt;10 km, geen vaste thuiszorg.</li>
+          </ul>
+        </div>
+
+        <div class="plan-block">
+          <h3>2. Geactiveerde zorgbundels</h3>
+          <p>Zorgbundels gekozen op basis van de actieve probleemgebieden.</p>
+          <ul class="plan-list">
+            <li>Heupfractuur thuisrevalidatie + valpreventie.</li>
+            <li>Complexe wondzorg bij diabetes.</li>
+            <li>Diabetesregie + leefstijl na ziekenhuisopname.</li>
+            <li>Woning &amp; zelfredzaamheid alleenwonende 65+.</li>
+            <li>Netwerk rond alleenwonende versterken.</li>
+            <li>Medicatiebeheer &amp; therapietrouw.</li>
+          </ul>
+        </div>
+
+        <div class="plan-block">
+          <h3>3. Medicatieschema (voorstel)</h3>
+          <p>Samengesteld op basis van gescrapete medicatielijst + medicatie‑review (huisarts/apotheker). Dit is een voorstel, geen voorschrift.</p>
+          <ul class="plan-list">
+            <li><strong>Ochtend</strong><br>
+              Antidiabeticum / insuline volgens aangepast schema (bijvoorbeeld insuline basaal + kortwerkend bij ontbijt).<br>
+              Bloeddrukmedicatie volgens huidig behandelplan.
+            </li>
+            <li><strong>Middag</strong><br>
+              Eventuele extra antidiabetica of andere chronische medicatie.
+            </li>
+            <li><strong>Avond</strong><br>
+              Pijnstilling volgens schema na heupoperatie (bijvoorbeeld paracetamol op vaste tijdstippen, zo nodig extra).<br>
+              Eventuele cholesterolverlagers of andere avondmedicatie.
+            </li>
+            <li><strong>Zo nodig</strong><br>
+              Door arts voorgeschreven noodmedicatie (bijvoorbeeld extra pijnstilling, medicatie bij hypo/hyperglycemie), met duidelijke parameters in het EPD en in het plan.
+            </li>
+          </ul>
+          <p class="section-intro">
+            <span class="pill-small">Zorgstart‑actie</span> Medicatieschema wordt als gestructureerde lijst aangeboden aan het EPD en aan huisartsen/apothekers, en gebruikt voor het klaarzetten van weekdozen en patiëntvriendelijke uitleg.
+          </p>
+        </div>
+
+        <div class="plan-block">
+          <h3>4. Taken &amp; voorgestelde zorgverleners</h3>
+          <p>Elke bundel wordt omgezet in taken. Zorgverleners worden voorgesteld via het matchingsplatform (regio, type zorg, beschikbaarheid). Per taak wordt aangegeven of een medisch voorschrift noodzakelijk is voor opstart en/of terugbetaling.</p>
+          <ul class="plan-list">
+            <li><span class="pill-small">Heupfractuur &amp; valpreventie</span><br>
+              <strong>Taken</strong>:<br>
+              • Huisbezoek binnen 48 uur na ontslag – opstart valpreventie + looptraining met rollator.<br>
+              • 2–3 sessies kinesitherapie per week, 6 weken.<br>
+              • Evaluatie transfers (bed/stoel/toilet).<br>
+              <strong>Voorschrift nodig?</strong><br>
+              • Kinesitherapie: voorschrift aanbevolen voor terugbetaling en rapportering.<br>
+              • Valpreventie-advies en educatie: kan zonder voorschrift, maar vaak geïntegreerd in het kine‑traject.<br>
+              <strong>Voorstel zorgverlener</strong>:<br>
+              • Kinesist uit matchingsplatform – gefilterd op postcode, ervaring geriatrie/orthopedie.<br>
+              • Ergotherapeut (huisbezoek binnen 7 dagen) – via matchingsplatform “ergotherapie aan huis”.
+            </li>
+
+            <li><span class="pill-small">Complexe wondzorg bij diabetes</span><br>
+              <strong>Taken</strong>:<br>
+              • Dagelijkse wondzorg aan heupwonde, observatie op infectie.<br>
+              • Rapportage in Zorgstart + signaal bij alarmsymptomen.<br>
+              <strong>Voorschrift nodig?</strong><br>
+              • Thuisverpleging: voorschrift of aanvraag vereist voor terugbetaling van technische wondzorg en specifieke verbandmaterialen.<br>
+              <strong>Voorstel zorgverlener</strong>:<br>
+              • Thuisverplegingsdienst uit matchingsplatform (diabetes + wondzorgexpertise).<br>
+              • Huisarts voor controle ongeveer dag 7 na ontslag.
+            </li>
+
+            <li><span class="pill-small">Diabetesregie + leefstijl</span><br>
+              <strong>Taken</strong>:<br>
+              • Consult huisarts/diabetesteam binnen 1 week: parameters en medicatie‑/insulineregime herbekijken.<br>
+              • Dagelijkse glycemiemeting en educatie eerste 2 weken (thuisverpleging).<br>
+              • Aanbod rookstopbegeleiding en leefstijlcoaching.<br>
+              <strong>Voorschrift nodig?</strong><br>
+              • Thuisverpleging voor glycemiemetingen en injecties: voorschrift nodig voor terugbetaling.<br>
+              • Consulten huisarts en diabetoloog: volgens klassieke raadplegingsregeling.<br>
+              • Rookstopbegeleiding en coaching: afhankelijk van regeling en terugbetaling, meestal zonder klassiek voorschrift.<br>
+              <strong>Voorstel zorgverlener</strong>:<br>
+              • Huisarts en eventueel diabetoloog (matchingsplatform specialistische opvolging).<br>
+              • Thuisverpleging (zelfde dienst als wondzorg, één kanaal naar patiënt).<br>
+              • Tabakoloog of coach via matchingsplatform.
+            </li>
+
+            <li><span class="pill-small">Woning &amp; zelfredzaamheid</span><br>
+              <strong>Taken</strong>:<br>
+              • Huisbezoek ergotherapeut – analyse badkamer, slaapkamer, routes in huis.<br>
+              • Advies en aanvraag hulpmiddelen (toiletverhoger, douchekruk, handgrepen).<br>
+              • Check nood aan poets, boodschappen en maaltijden aan huis.<br>
+              <strong>Voorschrift nodig?</strong><br>
+              • Ergotherapie aan huis: vaak voorschrift nodig voor terugbetaling, afhankelijk van financiering.<br>
+              • Hulpmiddelen: voorschrift of attest vereist voor terugbetaling van mobiliteitshulpmiddelen en bepaalde materialen.<br>
+              • Poets- en maaltijddiensten: geen medisch voorschrift, wel administratieve aanvraag.<br>
+              <strong>Voorstel zorgverlener</strong>:<br>
+              • Ergotherapeut en erkende hulpmiddelenleverancier via matchingsplatform.<br>
+              • Dienstencheque‑/poetsdienst en maaltijdservice in de regio.
+            </li>
+
+            <li><span class="pill-small">Netwerk rond alleenwonende versterken</span><br>
+              <strong>Taken</strong>:<br>
+              • Gesprek met zoon en dochter (online of fysiek) over haalbare ondersteuning.<br>
+              • Afspreken wie bereikbaar is in het weekend of bij alarm.<br>
+              • Eventueel vrijwilligersdienst of buurtnetwerk verkennen.<br>
+              <strong>Voorschrift nodig?</strong><br>
+              • Geen medisch voorschrift, wel registratie in zorgplan en eventuele aanmelding bij diensten.<br>
+              <strong>Voorstel zorgverlener</strong>:<br>
+              • Sociaal werker of zorgcoördinator (ziekenhuis of lokaal dienstencentrum), zichtbaar in matchingsplatform.
+            </li>
+
+            <li><span class="pill-small">Medicatiebeheer &amp; therapietrouw</span><br>
+              <strong>Taken</strong>:<br>
+              • Medicatie‑review (huisarts + apotheker) op basis van gescrapete lijst en recent beleid.<br>
+              • Voorbereiden weekdoos (apotheek).<br>
+              • Controle op inname in de eerste weken (thuisverpleging).<br>
+              <strong>Voorschrift nodig?</strong><br>
+              • Aanpassing en opstart medicatie: medisch voorschrift noodzakelijk.<br>
+              • Weekdoos klaarmaken: geen apart voorschrift, wel medicatieschema van arts vereist.<br>
+              • Thuisverpleging voor toediening en controle medicatie: voorschrift vereist voor terugbetaling van technische handelingen.<br>
+              <strong>Voorstel zorgverlener</strong>:<br>
+              • Huisarts (gekend).<br>
+              • Voorkeursapotheek of apotheek gekozen via matchingsplatform in de buurt.<br>
+              • Thuisverpleging (zelfde dienst als wondzorg en diabetes indien mogelijk).
+            </li>
+          </ul>
+        </div>
+
+        <div class="plan-block">
+          <h3>5. Noodzakelijke zorgverleners &amp; matchingsplatform</h3>
+          <p>
+            Op basis van de geactiveerde zorgbundels zijn volgende zorgverleners noodzakelijk. Via de 
+            <a href="https://jvnds1969-png.github.io/Zorgverleners/" target="_blank" rel="noopener">
+              Zorgstart Marketplace
+            </a>
+            worden passende zorgverleners voorgesteld op basis van regio, expertise en beschikbaarheid.
+          </p>
+          <ul class="plan-list">
+            <li>Kinesitherapeut (thuisrevalidatie heupfractuur, valpreventie).</li>
+            <li>Ergotherapeut (huisbezoek, woninganalyse, hulpmiddelenadvies).</li>
+            <li>Thuisverpleging (wondzorg, glycemie-opvolging, medicatie-inname).</li>
+            <li>Huisarts (medicatiebeheer, diabetesregie, globale opvolging).</li>
+            <li>Specialist (orthopedist, geriater of diabetoloog voor gespecialiseerde opvolging).</li>
+            <li>Apotheker (weekdozen, medicatiebewaking en therapietrouw).</li>
+            <li>Poets- en maaltijddiensten, eventueel vrijwilligers en buurtnetwerk.</li>
+          </ul>
+          <p class="section-intro">
+            <span class="pill-small">Zorgstart‑actie</span>
+            Uit deze lijst genereert Zorgstart een concrete shortlist in de
+            <a href="https://jvnds1969-png.github.io/Zorgverleners/" target="_blank" rel="noopener">
+              Zorgstart Marketplace
+            </a>, die de zorgcoördinator kan bevestigen of aanpassen.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="plan-section" id="tab-pat">
+        <div class="plan-block">
+          <h3>1. Waarom is er een plan?</h3>
+          <p>
+            U bent gevallen en hebt uw heup gebroken. U bent geopereerd. U moet nu veilig leren stappen met een rollator en uw wonde heeft extra zorg nodig door uw suikerziekte en het roken. U woont alleen, daarom spreken we samen af wie u helpt.
+          </p>
+        </div>
+
+        <div class="plan-block">
+          <h3>2. Hoe ziet uw medicatieschema eruit?</h3>
+          <p>Dit is een overzicht in gewone taal. De exacte medicijnen en dosissen bespreekt uw arts met u.</p>
+          <ul class="plan-list">
+            <li><strong>Ochtend</strong><br>
+              U neemt uw medicijnen voor suiker en bloeddruk. De thuisverpleegkundige helpt u in het begin om dit juist te doen.
+            </li>
+            <li><strong>Middag</strong><br>
+              Als u nog middagtabletten hebt, staan die in uw doosje klaar.
+            </li>
+            <li><strong>Avond</strong><br>
+              U neemt uw pijnstillers volgens afspraak en andere avondmedicatie die uw arts heeft voorgeschreven.
+            </li>
+            <li><strong>Zo nodig</strong><br>
+              U krijgt duidelijke uitleg over welke extra medicijnen u mag nemen bij meer pijn of bij problemen met uw suiker.
+            </li>
+          </ul>
+          <p class="section-intro">
+            De thuisverpleegkundige, uw huisarts en de apotheker werken samen: zij zorgen ervoor dat uw medicijndoosje klopt en dat u hulp krijgt als het ingewikkeld is.
+          </p>
+        </div>
+
+        <div class="plan-block">
+          <h3>3. Wat hebben we praktisch afgesproken?</h3>
+          <ul class="plan-list">
+            <li><strong>Stappen en bewegen</strong><br>
+              Een kinesist komt binnen twee dagen bij u thuis langs om te oefenen met de rollator, en om veilig op te staan en te gaan zitten.
+            </li>
+            <li><strong>De wonde verzorgen</strong><br>
+              Een verpleegkundige komt elke dag langs om uw wonde te bekijken en te verzorgen. Bij roodheid, koorts of meer pijn belt hij of zij uw huisarts.
+            </li>
+            <li><strong>Suiker en controle</strong><br>
+              Binnen een week ziet u uw huisarts om uw suiker en medicijnen te bespreken. In het begin helpt de thuisverpleegkundige met het meten.
+            </li>
+            <li><strong>Uw huis veiliger maken</strong><br>
+              Een ergotherapeut bekijkt samen met u of uw badkamer, slaapkamer en gang veilig genoeg zijn. Waar nodig plaatsen we hulpmiddelen.
+            </li>
+            <li><strong>Wie helpt nog?</strong><br>
+              De sociale dienst bekijkt met u en uw kinderen of er hulp kan komen voor poetsen, boodschappen of maaltijden aan huis.
+            </li>
+          </ul>
+        </div>
+
+        <div class="plan-block">
+          <h3>4. Wie weet dit allemaal?</h3>
+          <p>
+            Uw huisarts, de thuisverpleegkundige, de kinesist, de ergotherapeut, de apotheek en de sociale dienst zien dit plan via Zorgstart. Zo hoeft u uw verhaal niet telkens opnieuw te doen en weet iedereen wat er afgesproken is.
+          </p>
+        </div>
+
+        <div class="plan-block">
+          <h3>5. Hoe worden zorgverleners gekozen?</h3>
+          <p>
+            Via Zorgstart wordt een lijst gemaakt van geschikte zorgverleners in uw buurt. Uw huisarts of zorgcoördinator bekijkt samen met u wie u het liefst aan huis krijgt voor verpleging, kinesitherapie, ergotherapie en andere hulp.
+          </p>
+          <p>
+            Deze zorgverleners worden gekozen via de Zorgstart Marketplace, een overzicht van beschikbare diensten in uw regio.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('.plan-section');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('active'));
+      sections.forEach((s) => s.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById('tab-' + btn.dataset.tab);
+      if (target) {
+        target.classList.add('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
