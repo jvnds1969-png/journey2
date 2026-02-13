@@ -4,316 +4,806 @@
   <meta charset="UTF-8">
   <title>Zorgstart – Journey & Zorgplan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     :root {
-      --bg: #f6f7fb;
+      /* Warme, zachte ziekenhuisstijl */
+      --bg: #f3f6fb;
       --bg-alt: #ffffff;
-      --border: #e0e4f0;
-      --accent: #ff6b6b;
-      --accent-soft: rgba(255, 107, 107, 0.08);
-      --accent-2: #4c6fff;
-      --text-main: #1e2433;
-      --text-muted: #6f7690;
-      --radius-lg: 14px;
+      --bg-alt-soft: #f8fbff;
+
+      --border: #d6e2f0;
+      --border-soft: rgba(214, 226, 240, 0.7);
+
+      --accent: #1faacd;
+      --accent-soft: rgba(31, 170, 205, 0.08);
+      --accent-2: #165b72;
+      --accent-2-soft: rgba(22, 91, 114, 0.08);
+
+      --warm-1: #f97316;
+      --warm-soft: rgba(249, 115, 22, 0.08);
+
+      --ok: #22c55e;
+      --warn: #f97316;
+
+      --text-main: #10243e;
+      --text-muted: #6b7280;
+      --text-soft: #9ca3af;
+
+      --radius-xl: 20px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
       --radius-pill: 999px;
-      --shadow-soft: 0 14px 40px rgba(15, 23, 42, 0.08);
+
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+
+      --font-base: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
     }
 
-    * , *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 15px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    @media (max-width: 768px) {
+      html {
+        font-size: 14px;
+      }
+    }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #ffffff 0, #f6f7fb 55%, #edf0f8 100%);
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-base);
+      background:
+        radial-gradient(circle at top left, #ffffff 0, #f4f7fb 55%, #e8f0fb 100%);
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
     }
 
-    a { color: var(--accent-2); text-decoration: none; }
-
-    .page {
-      max-width: 1040px;
-      margin: 0 auto 48px;
-      padding: 16px 16px 40px;
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
 
+    /* Layout */
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto 3rem;
+      padding: 1.2rem 1rem 2.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .page {
+        padding: 1.5rem 1.5rem 3rem;
+      }
+    }
+
+    /* Hero */
+
     .hero {
-      margin-bottom: 20px;
-      padding: 18px 18px 20px;
-      border-radius: 18px;
-      background: var(--bg-alt);
+      margin-bottom: 1.7rem;
+      padding: 1.3rem 1.3rem 1.6rem;
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 10% 0, rgba(255, 255, 255, 0.9) 0, transparent 55%),
+        linear-gradient(135deg, rgba(31, 170, 205, 0.08), rgba(255, 228, 194, 0.3)),
+        var(--bg-alt);
       box-shadow: var(--shadow-soft);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(214, 226, 240, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -50px;
+      top: -60px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 70%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      padding: 4px 10px;
+      gap: 0.4rem;
+      padding: 0.3rem 0.8rem;
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-muted);
-      background: #f9fafb;
+      color: var(--text-soft);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14);
+    }
+
+    .hero-tagline {
+      font-size: 0.75rem;
+      color: var(--accent-2);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 0.25rem 0.7rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .hero-tagline span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--warm-1);
+    }
+
+    .hero-main {
+      position: relative;
+      z-index: 1;
+      margin-top: 0.6rem;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 768px) {
+      .hero-main {
+        grid-template-columns: 1fr;
+      }
     }
 
     .hero h1 {
-      margin: 10px 0 6px;
-      font-size: clamp(22px, 3.3vw, 28px);
+      margin: 0.5rem 0 0.35rem;
+      font-size: clamp(1.55rem, 3.1vw, 2.1rem);
       letter-spacing: -0.03em;
+      color: var(--accent-2);
     }
 
     .hero-lead {
       margin: 0;
-      font-size: 14px;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      max-width: 520px;
+      max-width: 34rem;
     }
 
     .hero-meta {
-      margin-top: 10px;
+      margin-top: 0.8rem;
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 0.4rem;
     }
 
     .chip {
-      padding: 4px 10px;
+      padding: 0.28rem 0.8rem;
       border-radius: var(--radius-pill);
-      font-size: 11px;
+      font-size: 0.72rem;
       background: var(--accent-soft);
-      color: #b63c3c;
+      color: var(--accent-2);
+      border: 1px solid rgba(31, 170, 205, 0.2);
     }
 
     .chip-soft {
-      background: #edf1ff;
-      color: #4252c7;
+      background: rgba(22, 91, 114, 0.06);
+      color: var(--accent-2);
+      border-color: rgba(22, 91, 114, 0.3);
     }
 
+    .hero-side {
+      justify-self: flex-end;
+      max-width: 260px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(214, 226, 240, 0.8);
+      padding: 0.6rem 0.8rem;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-side-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin: 0 0 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--accent-2);
+    }
+
+    .hero-side-chip {
+      font-size: 0.68rem;
+      padding: 0.14rem 0.5rem;
+      border-radius: var(--radius-pill);
+      background: #ecfeff;
+      color: var(--accent-2);
+    }
+
+    .hero-side-list {
+      margin: 0;
+      padding-left: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hero-side-list li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* Sections */
+
     section {
-      margin-top: 22px;
+      margin-top: 1.7rem;
     }
 
     h2 {
-      margin: 0 0 6px;
-      font-size: 18px;
+      margin: 0 0 0.25rem;
+      font-size: 1.15rem;
       letter-spacing: -0.02em;
+      color: var(--accent-2);
     }
 
     .section-intro {
-      margin: 0 0 12px;
-      font-size: 13px;
+      margin: 0 0 0.75rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
+    }
+
+    /* Journey card */
+
+    .card {
+      background: var(--bg-alt);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      padding: 1rem 1rem 1.1rem;
     }
 
     .journey-card {
       background: var(--bg-alt);
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 14px 16px 16px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      padding: 1rem 1rem 1.1rem;
     }
 
     .journey-grid {
       display: grid;
       grid-template-columns: minmax(0, 2.1fr) minmax(0, 2fr);
-      gap: 16px;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 768px) {
+      .journey-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .journey-left h3 {
-      margin: 0 0 4px;
-      font-size: 15px;
+      margin: 0 0 0.2rem;
+      font-size: 0.95rem;
     }
 
     .journey-left p {
-      margin: 0 0 8px;
-      font-size: 13px;
+      margin: 0 0 0.6rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
     }
 
     .pill-strip {
       display: inline-flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
+      gap: 0.35rem;
+      margin-top: 0.2rem;
     }
 
     .pill {
-      padding: 3px 8px;
+      padding: 0.2rem 0.6rem;
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      font-size: 11px;
-      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.72rem;
+      color: var(--text-soft);
       background: #f9fafb;
     }
 
     .timeline {
-      margin-top: 10px;
+      margin-top: 0.8rem;
       border-top: 1px dashed #d4d7e5;
-      padding-top: 10px;
+      padding-top: 0.8rem;
     }
 
     .timeline-step {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
-      column-gap: 10px;
-      margin-bottom: 10px;
+      column-gap: 0.6rem;
+      margin-bottom: 0.7rem;
     }
 
-    .timeline-step:last-child { margin-bottom: 0; }
+    .timeline-step:last-child {
+      margin-bottom: 0;
+    }
 
     .step-dot {
       width: 14px;
       height: 14px;
       border-radius: 999px;
-      border: 2px solid var(--accent-2);
+      border: 2px solid var(--accent);
       background: #ffffff;
       margin-top: 4px;
+      box-shadow: 0 0 0 3px rgba(31, 170, 205, 0.18);
     }
 
     .step-body h4 {
-      margin: 0 0 2px;
-      font-size: 13px;
+      margin: 0 0 0.1rem;
+      font-size: 0.82rem;
     }
 
     .step-body p {
       margin: 0;
-      font-size: 12px;
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
 
+    /* Journey right */
+
     .journey-right {
-      border-radius: 14px;
+      border-radius: var(--radius-md);
       border: 1px dashed #d4d7e5;
-      background: #f9fafc;
-      padding: 10px 12px 12px;
-      font-size: 12px;
+      background: var(--bg-alt-soft);
+      padding: 0.7rem 0.8rem 0.8rem;
+      font-size: 0.8rem;
     }
 
     .journey-right-title {
-      font-size: 12px;
+      font-size: 0.78rem;
       font-weight: 600;
-      margin: 0 0 6px;
+      margin: 0 0 0.4rem;
       color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.25rem;
     }
 
     .badge-soft {
       display: inline-flex;
-      padding: 2px 7px;
+      padding: 0.15rem 0.5rem;
       border-radius: var(--radius-pill);
-      background: #eef2ff;
-      color: #4338ca;
-      font-size: 10px;
-      margin-left: 4px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 0.68rem;
+      white-space: nowrap;
     }
 
     .tag-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin: 4px 0 8px;
+      gap: 0.25rem;
+      margin: 0.25rem 0 0.5rem;
     }
 
     .tag {
-      padding: 2px 7px;
+      padding: 0.16rem 0.45rem;
       border-radius: var(--radius-pill);
       border: 1px solid #e2e8f0;
       background: #ffffff;
-      font-size: 10px;
+      font-size: 0.68rem;
       color: #64748b;
     }
 
     .subheading {
-      font-size: 11px;
+      font-size: 0.75rem;
       font-weight: 600;
-      margin: 6px 0 4px;
+      margin: 0.35rem 0 0.2rem;
       color: #4b5563;
     }
 
     .mini-list {
       margin: 0;
-      padding-left: 14px;
-      font-size: 11px;
+      padding-left: 1rem;
+      font-size: 0.75rem;
       color: #6b7280;
     }
 
-    .plan-card {
-      margin-top: 10px;
-      background: var(--bg-alt);
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 14px 16px 16px;
+    .mini-list li {
+      margin-bottom: 0.2rem;
     }
+
+    /* Zorgplan card */
+
+    .plan-card {
+      margin-top: 0.9rem;
+      background: var(--bg-alt);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
+      padding: 1rem 1rem 1.1rem;
+    }
+
+    /* Tabs */
 
     .tab-header {
       display: inline-flex;
       border-radius: var(--radius-pill);
-      background: #eef0f8;
-      padding: 3px;
-      margin-bottom: 10px;
+      background: #e5edf8;
+      padding: 0.18rem;
+      margin-bottom: 0.7rem;
     }
 
     .tab-btn {
       border: none;
       background: transparent;
-      padding: 5px 12px;
+      padding: 0.3rem 0.9rem;
       border-radius: var(--radius-pill);
-      font-size: 12px;
+      font-size: 0.78rem;
       cursor: pointer;
       color: #4b5563;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
     .tab-btn.active {
       background: #ffffff;
-      box-shadow: 0 1px 4px rgba(148, 163, 184, 0.6);
-      color: #111827;
+      box-shadow: 0 1px 6px rgba(148, 163, 184, 0.7);
+      color: var(--accent-2);
+    }
+
+    .tab-btn.active::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
     }
 
     .plan-section {
       display: none;
-      font-size: 13px;
+      font-size: 0.85rem;
     }
 
-    .plan-section.active { display: block; }
+    .plan-section.active {
+      display: block;
+    }
 
     .plan-block {
-      margin-bottom: 10px;
+      margin-bottom: 0.9rem;
     }
 
     .plan-block h3 {
-      margin: 0 0 4px;
-      font-size: 14px;
+      margin: 0 0 0.25rem;
+      font-size: 0.92rem;
     }
 
     .plan-block p {
-      margin: 0 0 4px;
+      margin: 0 0 0.3rem;
       color: var(--text-muted);
     }
 
     .plan-list {
       margin: 0;
-      padding-left: 16px;
-      font-size: 12px;
+      padding-left: 1rem;
+      font-size: 0.8rem;
       color: #4b5563;
+    }
+
+    .plan-list li {
+      margin-bottom: 0.25rem;
     }
 
     .pill-small {
       display: inline-flex;
-      padding: 2px 7px;
+      padding: 0.16rem 0.5rem;
       border-radius: var(--radius-pill);
-      font-size: 10px;
-      background: #f1f5f9;
-      color: #64748b;
-      border: 1px solid #e2e8f0;
+      font-size: 0.68rem;
+      background: #ecfeff;
+      color: var(--accent-2);
+      border: 1px solid rgba(31, 170, 205, 0.3);
     }
 
-    @media (max-width: 768px) {
-      .journey-grid {
-        grid-template-columns: 1fr;
+    /* Tasks accordion */
+
+    .task-accordion {
+      border-top: 1px solid var(--border);
+      margin-top: 0.6rem;
+    }
+
+    .task-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .task-header {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 0.5rem 0.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .task-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .task-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-2);
+    }
+
+    .task-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+    }
+
+    .task-status-label {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-pill);
+      background: #f3f4f6;
+      color: var(--text-soft);
+    }
+
+    .task-item.completed .task-status-label {
+      background: rgba(34, 197, 94, 0.12);
+      color: #15803d;
+    }
+
+    .task-chevron {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      transition: transform 0.2s ease;
+    }
+
+    .task-item.open .task-chevron {
+      transform: rotate(180deg);
+    }
+
+    .task-body {
+      display: none;
+      padding: 0 0.1rem 0.6rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .task-item.open .task-body {
+      display: block;
+    }
+
+    .task-subtasks {
+      margin: 0.4rem 0 0.3rem;
+      padding-left: 1rem;
+      list-style: none;
+    }
+
+    .task-subtasks li {
+      margin-bottom: 0.25rem;
+    }
+
+    .task-subtasks label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+
+    .task-subtasks input[type="checkbox"] {
+      margin-top: 0.1rem;
+    }
+
+    .task-provider {
+      margin: 0.3rem 0 0;
+      font-size: 0.78rem;
+    }
+
+    /* Provider experiences */
+
+    .provider-experiences {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.4rem;
+    }
+
+    .provider-quote {
+      background: var(--bg-alt-soft);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 0.7rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .provider-quote h4 {
+      margin: 0 0 0.25rem;
+      font-size: 0.82rem;
+      color: var(--accent-2);
+    }
+
+    .provider-quote p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Testimonials carousel */
+
+    .testimonials-carousel {
+      position: relative;
+      margin-top: 0.6rem;
+      padding: 0.3rem 0 1.5rem;
+    }
+
+    .testimonials-track {
+      display: flex;
+      transition: transform 0.4s ease;
+      will-change: transform;
+    }
+
+    .testimonials-track .testimonial-card {
+      min-width: 100%;
+      max-width: 100%;
+    }
+
+    .testimonial-card {
+      background: var(--bg-alt-soft);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 0.8rem 0.9rem;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
+    }
+
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .testimonial-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .testimonial-avatar.patient {
+      background: linear-gradient(135deg, var(--accent), #38bdf8);
+    }
+
+    .testimonial-avatar.nurse {
+      background: linear-gradient(135deg, #0f766e, #22c55e);
+    }
+
+    .testimonial-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-2);
+    }
+
+    .testimonial-role {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .testimonial-text {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .testimonial-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--accent-2);
+      font-size: 1rem;
+    }
+
+    .testimonial-nav.prev {
+      left: 0.2rem;
+    }
+
+    .testimonial-nav.next {
+      right: 0.2rem;
+    }
+
+    .testimonial-nav:focus-visible {
+      outline: 2px solid var(--accent);
+    }
+
+    .testimonial-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.3rem;
+      margin-top: 0.7rem;
+    }
+
+    .testimonial-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: none;
+      background: #d1d5db;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .testimonial-dots .dot.active {
+      background: var(--accent);
+      transform: scale(1.15);
+    }
+
+    @media (min-width: 768px) {
+      .testimonials-track .testimonial-card {
+        min-width: 50%;
+        max-width: 50%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 1rem 0.9rem 1.1rem;
+      }
+      .journey-card,
+      .plan-card {
+        padding: 0.8rem 0.8rem 0.9rem;
       }
     }
   </style>
@@ -322,18 +812,43 @@
 
 <div class="page">
 
+  <!-- Hero -->
   <header class="hero">
-    <div class="hero-badge">Zorgstart – Journey & Zorgplan</div>
-    <h1>Van heupfractuur naar veilig thuis</h1>
-    <p class="hero-lead">
-      Journey van een 68‑jarige alleenwonende patiënt, gekoppeld aan wat Zorgstart onder de motorkap doet en welk zorgplan daaruit rolt.
-    </p>
-    <div class="hero-meta">
-      <span class="chip">Heupfractuur &amp; diabetes</span>
-      <span class="chip chip-soft">Valrisico · Wondzorg · Thuiszorg</span>
+    <div class="hero-badge-row">
+      <div class="hero-badge">Zorgstart – Journey &amp; Zorgplan</div>
+      <div class="hero-tagline">
+        <span class="dot"></span>
+        Samen van ziekenhuis naar veilig thuis
+      </div>
+    </div>
+
+    <div class="hero-main">
+      <div>
+        <h1>Van heupfractuur naar veilig thuis</h1>
+        <p class="hero-lead">
+          Journey van een 68‑jarige alleenwonende patiënt, gekoppeld aan wat Zorgstart onder de motorkap doet en welk zorgplan daaruit rolt.
+        </p>
+        <div class="hero-meta">
+          <span class="chip">Heupfractuur &amp; diabetes</span>
+          <span class="chip chip-soft">Valrisico · Wondzorg · Thuiszorg</span>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <p class="hero-side-title">
+          Kern van deze case
+          <span class="hero-side-chip">Transmurale ontslagflow</span>
+        </p>
+        <ul class="hero-side-list">
+          <li>68 jaar, alleenwonend, diabetes en roker.</li>
+          <li>Heupfractuur, dag 3 ontslag uit ziekenhuis.</li>
+          <li>Multidisciplinair plan: wondzorg, mobiliteit, diabetes, woning, netwerk.</li>
+        </ul>
+      </aside>
     </div>
   </header>
 
+  <!-- Journey -->
   <section>
     <h2>1. Journey van de patiënt</h2>
     <p class="section-intro">
@@ -342,6 +857,7 @@
 
     <div class="journey-card">
       <div class="journey-grid">
+        <!-- Links: patiënt -->
         <div class="journey-left">
           <h3>Wat de patiënt meemaakt</h3>
           <p>
@@ -356,7 +872,6 @@
           </div>
 
           <div class="timeline">
-
             <div class="timeline-step">
               <div class="step-dot"></div>
               <div class="step-body">
@@ -388,10 +903,10 @@
                 <p>Hij hoort dat hij al naar huis mag. Hij hoopt dat er genoeg hulp is voor wondzorg, stappen met rollator en opvolging van suiker en medicatie.</p>
               </div>
             </div>
-
           </div>
         </div>
 
+        <!-- Rechts: Zorgstart -->
         <aside class="journey-right">
           <p class="journey-right-title">
             Wat Zorgstart op de achtergrond doet
@@ -434,6 +949,7 @@
     </div>
   </section>
 
+  <!-- Zorgplan -->
   <section>
     <h2>2. Zorgplan dat Zorgstart oplevert</h2>
     <p class="section-intro">
@@ -446,6 +962,7 @@
         <button class="tab-btn" data-tab="pat">Voor de patiënt</button>
       </div>
 
+      <!-- Professioneel plan -->
       <div class="plan-section active" id="tab-pro">
 
         <div class="plan-block">
@@ -513,95 +1030,311 @@
           </p>
         </div>
 
+        <!-- 4. Taken als accordion met checkboxes -->
         <div class="plan-block">
           <h3>4. Taken &amp; voorgestelde zorgverleners</h3>
-          <p>Elke bundel wordt omgezet in taken. Zorgverleners worden voorgesteld via het matchingsplatform (regio, type zorg, beschikbaarheid). Per taak wordt aangegeven of een medisch voorschrift noodzakelijk is voor opstart en/of terugbetaling.</p>
-          <ul class="plan-list">
-            <li><span class="pill-small">Heupfractuur &amp; valpreventie</span><br>
-              <strong>Taken</strong>:<br>
-              • Huisbezoek binnen 48 uur na ontslag – opstart valpreventie + looptraining met rollator.<br>
-              • 2–3 sessies kinesitherapie per week, 6 weken.<br>
-              • Evaluatie transfers (bed/stoel/toilet).<br>
-              <strong>Voorschrift nodig?</strong><br>
-              • Kinesitherapie: voorschrift aanbevolen voor terugbetaling en rapportering.<br>
-              • Valpreventie-advies en educatie: kan zonder voorschrift, maar vaak geïntegreerd in het kine‑traject.<br>
-              <strong>Voorstel zorgverlener</strong>:<br>
-              • Kinesist uit matchingsplatform – gefilterd op postcode, ervaring geriatrie/orthopedie.<br>
-              • Ergotherapeut (huisbezoek binnen 7 dagen) – via matchingsplatform “ergotherapie aan huis”.
-            </li>
+          <p>
+            Elke bundel wordt omgezet in taken. Per taak kan men subtaken afvinken. Zodra alle subtaken van een taak afgewerkt zijn, verschijnt deze in het patiëntenplan als “in orde”.
+          </p>
 
-            <li><span class="pill-small">Complexe wondzorg bij diabetes</span><br>
-              <strong>Taken</strong>:<br>
-              • Dagelijkse wondzorg aan heupwonde, observatie op infectie.<br>
-              • Rapportage in Zorgstart + signaal bij alarmsymptomen.<br>
-              <strong>Voorschrift nodig?</strong><br>
-              • Thuisverpleging: voorschrift of aanvraag vereist voor terugbetaling van technische wondzorg en specifieke verbandmaterialen.<br>
-              <strong>Voorstel zorgverlener</strong>:<br>
-              • Thuisverplegingsdienst uit matchingsplatform (diabetes + wondzorgexpertise).<br>
-              • Huisarts voor controle ongeveer dag 7 na ontslag.
-            </li>
+          <div class="task-accordion">
 
-            <li><span class="pill-small">Diabetesregie + leefstijl</span><br>
-              <strong>Taken</strong>:<br>
-              • Consult huisarts/diabetesteam binnen 1 week: parameters en medicatie‑/insulineregime herbekijken.<br>
-              • Dagelijkse glycemiemeting en educatie eerste 2 weken (thuisverpleging).<br>
-              • Aanbod rookstopbegeleiding en leefstijlcoaching.<br>
-              <strong>Voorschrift nodig?</strong><br>
-              • Thuisverpleging voor glycemiemetingen en injecties: voorschrift nodig voor terugbetaling.<br>
-              • Consulten huisarts en diabetoloog: volgens klassieke raadplegingsregeling.<br>
-              • Rookstopbegeleiding en coaching: afhankelijk van regeling en terugbetaling, meestal zonder klassiek voorschrift.<br>
-              <strong>Voorstel zorgverlener</strong>:<br>
-              • Huisarts en eventueel diabetoloog (matchingsplatform specialistische opvolging).<br>
-              • Thuisverpleging (zelfde dienst als wondzorg, één kanaal naar patiënt).<br>
-              • Tabakoloog of coach via matchingsplatform.
-            </li>
+            <!-- Heupfractuur & valpreventie -->
+            <div class="task-item" data-task-id="heup-valpreventie">
+              <button class="task-header" type="button">
+                <div class="task-header-main">
+                  <span class="task-title">Heupfractuur &amp; valpreventie</span>
+                  <span class="task-subtitle">Mobilisatie, rollator, valrisico verminderen</span>
+                </div>
+                <span class="task-status-label">Open</span>
+                <span class="task-chevron">▾</span>
+              </button>
 
-            <li><span class="pill-small">Woning &amp; zelfredzaamheid</span><br>
-              <strong>Taken</strong>:<br>
-              • Huisbezoek ergotherapeut – analyse badkamer, slaapkamer, routes in huis.<br>
-              • Advies en aanvraag hulpmiddelen (toiletverhoger, douchekruk, handgrepen).<br>
-              • Check nood aan poets, boodschappen en maaltijden aan huis.<br>
-              <strong>Voorschrift nodig?</strong><br>
-              • Ergotherapie aan huis: vaak voorschrift nodig voor terugbetaling, afhankelijk van financiering.<br>
-              • Hulpmiddelen: voorschrift of attest vereist voor terugbetaling van mobiliteitshulpmiddelen en bepaalde materialen.<br>
-              • Poets- en maaltijddiensten: geen medisch voorschrift, wel administratieve aanvraag.<br>
-              <strong>Voorstel zorgverlener</strong>:<br>
-              • Ergotherapeut en erkende hulpmiddelenleverancier via matchingsplatform.<br>
-              • Dienstencheque‑/poetsdienst en maaltijdservice in de regio.
-            </li>
+              <div class="task-body">
+                <p><strong>Doel</strong>: veilige mobiliteit met rollator, valrisico beperken in de eerste 6 weken.</p>
+                <p><strong>Voorschrift nodig?</strong> Kinesitherapie: voorschrift aanbevolen voor terugbetaling en rapportering. Valpreventie‑advies: kan zonder voorschrift, vaak geïntegreerd in het kine‑traject.</p>
 
-            <li><span class="pill-small">Netwerk rond alleenwonende versterken</span><br>
-              <strong>Taken</strong>:<br>
-              • Gesprek met zoon en dochter (online of fysiek) over haalbare ondersteuning.<br>
-              • Afspreken wie bereikbaar is in het weekend of bij alarm.<br>
-              • Eventueel vrijwilligersdienst of buurtnetwerk verkennen.<br>
-              <strong>Voorschrift nodig?</strong><br>
-              • Geen medisch voorschrift, wel registratie in zorgplan en eventuele aanmelding bij diensten.<br>
-              <strong>Voorstel zorgverlener</strong>:<br>
-              • Sociaal werker of zorgcoördinator (ziekenhuis of lokaal dienstencentrum), zichtbaar in matchingsplatform.
-            </li>
+                <ul class="task-subtasks">
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="heup-valpreventie"
+                             data-subtask-label="Huisbezoek binnen 48 uur na ontslag">
+                      Huisbezoek binnen 48 uur na ontslag – opstart valpreventie + looptraining met rollator.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="heup-valpreventie"
+                             data-subtask-label="Kinesitherapie 2–3 sessies per week">
+                      2–3 sessies kinesitherapie per week, 6 weken.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="heup-valpreventie"
+                             data-subtask-label="Evaluatie transfers">
+                      Evaluatie transfers (bed/stoel/toilet) en bijsturen plan indien nodig.
+                    </label>
+                  </li>
+                </ul>
 
-            <li><span class="pill-small">Medicatiebeheer &amp; therapietrouw</span><br>
-              <strong>Taken</strong>:<br>
-              • Medicatie‑review (huisarts + apotheker) op basis van gescrapete lijst en recent beleid.<br>
-              • Voorbereiden weekdoos (apotheek).<br>
-              • Controle op inname in de eerste weken (thuisverpleging).<br>
-              <strong>Voorschrift nodig?</strong><br>
-              • Aanpassing en opstart medicatie: medisch voorschrift noodzakelijk.<br>
-              • Weekdoos klaarmaken: geen apart voorschrift, wel medicatieschema van arts vereist.<br>
-              • Thuisverpleging voor toediening en controle medicatie: voorschrift vereist voor terugbetaling van technische handelingen.<br>
-              <strong>Voorstel zorgverlener</strong>:<br>
-              • Huisarts (gekend).<br>
-              • Voorkeursapotheek of apotheek gekozen via matchingsplatform in de buurt.<br>
-              • Thuisverpleging (zelfde dienst als wondzorg en diabetes indien mogelijk).
-            </li>
-          </ul>
+                <p class="task-provider">
+                  <strong>Voorstel zorgverlener</strong>: kinesist (geriatrie/orthopedie) en ergotherapeut aan huis via Zorgstart Marketplace.
+                </p>
+              </div>
+            </div>
+
+            <!-- Complexe wondzorg bij diabetes -->
+            <div class="task-item" data-task-id="wondzorg-diabetes">
+              <button class="task-header" type="button">
+                <div class="task-header-main">
+                  <span class="task-title">Complexe wondzorg bij diabetes</span>
+                  <span class="task-subtitle">Heupwonde, infectierisico en rapportage</span>
+                </div>
+                <span class="task-status-label">Open</span>
+                <span class="task-chevron">▾</span>
+              </button>
+
+              <div class="task-body">
+                <p><strong>Doel</strong>: tijdige wondgenezing, voorkomen van infecties en duidelijke signaalfunctie naar artsen.</p>
+                <p><strong>Voorschrift nodig?</strong> Thuisverpleging: voorschrift of aanvraag vereist voor terugbetaling van technische wondzorg en specifieke verbandmaterialen.</p>
+
+                <ul class="task-subtasks">
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="wondzorg-diabetes"
+                             data-subtask-label="Dagelijkse wondzorg">
+                      Dagelijkse wondzorg aan heupwonde, observatie op infectie.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="wondzorg-diabetes"
+                             data-subtask-label="Rapportage in Zorgstart">
+                      Rapportage in Zorgstart, inclusief foto’s en parameters.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="wondzorg-diabetes"
+                             data-subtask-label="Artscontact bij alarmsymptomen">
+                      Huisarts contacteren bij alarmsymptomen (koorts, roodheid, uitgesproken pijn).
+                    </label>
+                  </li>
+                </ul>
+
+                <p class="task-provider">
+                  <strong>Voorstel zorgverlener</strong>: thuisverplegingsdienst (diabetes + wondzorgexpertise) en huisartscontrole ± dag 7 na ontslag.
+                </p>
+              </div>
+            </div>
+
+            <!-- Diabetesregie + leefstijl -->
+            <div class="task-item" data-task-id="diabetes-leefstijl">
+              <button class="task-header" type="button">
+                <div class="task-header-main">
+                  <span class="task-title">Diabetesregie &amp; leefstijl</span>
+                  <span class="task-subtitle">Glycemie, educatie en rookstop</span>
+                </div>
+                <span class="task-status-label">Open</span>
+                <span class="task-chevron">▾</span>
+              </button>
+
+              <div class="task-body">
+                <p><strong>Doel</strong>: betere glucoseregeling na opname, verminderd risico op complicaties en een haalbaar leefstijlplan.</p>
+                <p><strong>Voorschrift nodig?</strong> Thuisverpleging voor glycemiemetingen en injecties: voorschrift nodig voor terugbetaling. Consulten huisarts/diabetoloog: volgens klassieke regeling.</p>
+
+                <ul class="task-subtasks">
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="diabetes-leefstijl"
+                             data-subtask-label="Consult huisarts of diabetesteam binnen 1 week">
+                      Consult huisarts/diabetesteam binnen 1 week: parameters en medicatie‑/insulineregime herbekijken.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="diabetes-leefstijl"
+                             data-subtask-label="Dagelijkse glycemiemeting en educatie">
+                      Dagelijkse glycemiemeting en educatie eerste 2 weken (thuisverpleging).
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="diabetes-leefstijl"
+                             data-subtask-label="Aanbod rookstopbegeleiding">
+                      Aanbod rookstopbegeleiding en leefstijlcoaching.
+                    </label>
+                  </li>
+                </ul>
+
+                <p class="task-provider">
+                  <strong>Voorstel zorgverlener</strong>: huisarts, eventueel diabetoloog, thuisverpleging (zelfde dienst als wondzorg) en tabakoloog/coach via matchingsplatform.
+                </p>
+              </div>
+            </div>
+
+            <!-- Woning & zelfredzaamheid -->
+            <div class="task-item" data-task-id="woning-zelfredzaamheid">
+              <button class="task-header" type="button">
+                <div class="task-header-main">
+                  <span class="task-title">Woning &amp; zelfredzaamheid</span>
+                  <span class="task-subtitle">Veilige routes, hulpmiddelen, praktische hulp</span>
+                </div>
+                <span class="task-status-label">Open</span>
+                <span class="task-chevron">▾</span>
+              </button>
+
+              <div class="task-body">
+                <p><strong>Doel</strong>: een veilige woning en haalbare zelfredzaamheid voor een alleenwonende 65+ met rollator.</p>
+                <p><strong>Voorschrift nodig?</strong> Ergotherapie aan huis en bepaalde hulpmiddelen vragen een voorschrift of attest voor terugbetaling. Poets- en maaltijddiensten vragen een administratieve aanvraag.</p>
+
+                <ul class="task-subtasks">
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="woning-zelfredzaamheid"
+                             data-subtask-label="Huisbezoek ergotherapeut">
+                      Huisbezoek ergotherapeut – analyse badkamer, slaapkamer en routes in huis.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="woning-zelfredzaamheid"
+                             data-subtask-label="Advies en aanvraag hulpmiddelen">
+                      Advies en aanvraag hulpmiddelen (toiletverhoger, douchekruk, handgrepen).
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="woning-zelfredzaamheid"
+                             data-subtask-label="Check poets, boodschappen, maaltijden">
+                      Check nood aan poets, boodschappen en maaltijden aan huis; opstart indien nodig.
+                    </label>
+                  </li>
+                </ul>
+
+                <p class="task-provider">
+                  <strong>Voorstel zorgverlener</strong>: ergotherapeut, erkende hulpmiddelenleverancier, dienstencheque‑/poetsdienst en maaltijdservice in de regio.
+                </p>
+              </div>
+            </div>
+
+            <!-- Netwerk -->
+            <div class="task-item" data-task-id="netwerk-alleenwonende">
+              <button class="task-header" type="button">
+                <div class="task-header-main">
+                  <span class="task-title">Netwerk rond alleenwonende versterken</span>
+                  <span class="task-subtitle">Familie, buren en vrijwilligers</span>
+                </div>
+                <span class="task-status-label">Open</span>
+                <span class="task-chevron">▾</span>
+              </button>
+
+              <div class="task-body">
+                <p><strong>Doel</strong>: een realistisch netwerk dat weet wat er speelt en kan inspringen bij vragen of alarmsituaties.</p>
+                <p><strong>Voorschrift nodig?</strong> Geen medisch voorschrift; wel registratie in zorgplan en eventuele aanmelding bij diensten of vrijwilligersorganisaties.</p>
+
+                <ul class="task-subtasks">
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="netwerk-alleenwonende"
+                             data-subtask-label="Gesprek met kinderen">
+                      Gesprek met zoon en dochter (online of fysiek) over haalbare ondersteuning.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="netwerk-alleenwonende"
+                             data-subtask-label="Afspreken bereikbaarheid bij alarm">
+                      Afspreken wie bereikbaar is in het weekend of bij alarm.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="netwerk-alleenwonende"
+                             data-subtask-label="Verkennen vrijwilligers/buurt">
+                      Verkennen van vrijwilligersdienst of buurtnetwerk.
+                    </label>
+                  </li>
+                </ul>
+
+                <p class="task-provider">
+                  <strong>Voorstel zorgverlener</strong>: sociaal werker of zorgcoördinator (ziekenhuis of lokaal dienstencentrum), zichtbaar in matchingsplatform.
+                </p>
+              </div>
+            </div>
+
+            <!-- Medicatiebeheer & therapietrouw -->
+            <div class="task-item" data-task-id="medicatie-therapietrouw">
+              <button class="task-header" type="button">
+                <div class="task-header-main">
+                  <span class="task-title">Medicatiebeheer &amp; therapietrouw</span>
+                  <span class="task-subtitle">Review, weekdozen, inname-opvolging</span>
+                </div>
+                <span class="task-status-label">Open</span>
+                <span class="task-chevron">▾</span>
+              </button>
+
+              <div class="task-body">
+                <p><strong>Doel</strong>: een veilig en begrijpelijk medicatieschema, correct klaargezette weekdozen en goede therapietrouw.</p>
+                <p><strong>Voorschrift nodig?</strong> Voor opstart en aanpassing van medicatie is een voorschrift noodzakelijk. Thuisverpleging voor toediening/controle vereist een voorschrift voor terugbetaling van technische handelingen.</p>
+
+                <ul class="task-subtasks">
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="medicatie-therapietrouw"
+                             data-subtask-label="Medicatie-review huisarts + apotheker">
+                      Medicatie‑review door huisarts en apotheker op basis van gescrapete lijst en recent beleid.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="medicatie-therapietrouw"
+                             data-subtask-label="Weekdoos voorbereiden">
+                      Voorbereiden weekdoos in de apotheek op basis van het Zorgstart‑schema.
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="checkbox" class="task-checkbox"
+                             data-task-id="medicatie-therapietrouw"
+                             data-subtask-label="Controle op inname eerste weken">
+                      Controle op inname in de eerste weken (thuisverpleging).
+                    </label>
+                  </li>
+                </ul>
+
+                <p class="task-provider">
+                  <strong>Voorstel zorgverlener</strong>: huisarts, voorkeursapotheek of apotheek via matchingsplatform en thuisverpleging (zelfde dienst als wondzorg/diabetes indien mogelijk).
+                </p>
+              </div>
+            </div>
+
+          </div>
         </div>
 
+        <!-- 5. Noodzakelijke zorgverleners & Marketplace -->
         <div class="plan-block">
           <h3>5. Noodzakelijke zorgverleners &amp; matchingsplatform</h3>
           <p>
-            Op basis van de geactiveerde zorgbundels zijn volgende zorgverleners noodzakelijk. Via de 
+            Op basis van de geactiveerde zorgbundels zijn volgende zorgverleners noodzakelijk. Via de
             <a href="https://jvnds1969-png.github.io/Zorgverleners/" target="_blank" rel="noopener">
               Zorgstart Marketplace
             </a>
@@ -627,6 +1360,7 @@
 
       </div>
 
+      <!-- Patiëntenplan -->
       <div class="plan-section" id="tab-pat">
         <div class="plan-block">
           <h3>1. Waarom is er een plan?</h3>
@@ -679,14 +1413,24 @@
         </div>
 
         <div class="plan-block">
-          <h3>4. Wie weet dit allemaal?</h3>
+          <h3>4. Welke zaken zijn al in orde?</h3>
+          <p>
+            Hieronder ziet u welke onderdelen van uw zorgplan al gestart en afgewerkt zijn. Dit wordt automatisch aangevuld wanneer zorgverleners taken afvinken in Zorgstart.
+          </p>
+          <ul class="plan-list" id="patient-tasks-done">
+            <!-- Dynamisch aangevulde taken -->
+          </ul>
+        </div>
+
+        <div class="plan-block">
+          <h3>5. Wie weet dit allemaal?</h3>
           <p>
             Uw huisarts, de thuisverpleegkundige, de kinesist, de ergotherapeut, de apotheek en de sociale dienst zien dit plan via Zorgstart. Zo hoeft u uw verhaal niet telkens opnieuw te doen en weet iedereen wat er afgesproken is.
           </p>
         </div>
 
         <div class="plan-block">
-          <h3>5. Hoe worden zorgverleners gekozen?</h3>
+          <h3>6. Hoe worden zorgverleners gekozen?</h3>
           <p>
             Via Zorgstart wordt een lijst gemaakt van geschikte zorgverleners in uw buurt. Uw huisarts of zorgcoördinator bekijkt samen met u wie u het liefst aan huis krijgt voor verpleging, kinesitherapie, ergotherapie en andere hulp.
           </p>
@@ -698,112 +1442,160 @@
 
     </div>
   </section>
+
+  <!-- Wat zorgverleners ervaren -->
   <section>
-  <h2>3. Wat zorgverleners ervaren</h2>
-  <p class="section-intro">
-    Dezelfde patiënt, dezelfde heupfractuur – maar met Zorgstart voelt ontslag anders voor wie in het ziekenhuis werkt
-    en voor wie de zorg thuis opneemt.
-  </p>
-
-  <!-- Intramuraal -->
-  <div class="journey-card" style="margin-bottom: 1rem;">
-    <h3>Intramuraal – in het ziekenhuis</h3>
+    <h2>3. Wat zorgverleners ervaren</h2>
     <p class="section-intro">
-      Hoe artsen, verpleegkundigen en sociale dienst het verschil merken wanneer ontslag via Zorgstart loopt.
+      Dezelfde patiënt, dezelfde heupfractuur – maar met Zorgstart voelt ontslag anders voor wie in het ziekenhuis werkt en voor wie de zorg thuis opneemt.
     </p>
 
-    <div class="provider-experiences">
-      <article class="provider-quote">
-        <h4>Geriater / orthopedisch chirurg</h4>
-        <p>
-          “Vroeger zag ik bij ontslag alleen een vage notitie ‘thuiszorg volgt op’. Nu zie ik per probleemgebied welke bundel
-          geactiveerd is en wie wat gaat doen. Ik durf sneller ontslag te geven, omdat ik zie dat wondzorg, mobilisatie en
-          diabetesopvolging al klaarstaan.”
-        </p>
-      </article>
+    <!-- Intramuraal -->
+    <div class="journey-card" style="margin-bottom: 1rem;">
+      <h3>Intramuraal – in het ziekenhuis</h3>
+      <p class="section-intro">
+        Hoe artsen, verpleegkundigen en sociale dienst het verschil merken wanneer ontslag via Zorgstart loopt.
+      </p>
 
-      <article class="provider-quote">
-        <h4>Afdelingsverpleegkundige</h4>
-        <p>
-          “Bij complexe patiënten verloor ik veel tijd aan telefoons en losse briefjes. Met Zorgstart zie ik in één scherm
-          welke taken al ingepland zijn, welke nog openstaan en welke dienst ze opneemt. Ik kan mijn briefing aan de patiënt
-          veel gerichter doen.”
-        </p>
-      </article>
+      <div class="provider-experiences">
+        <article class="provider-quote">
+          <h4>Geriater / orthopedisch chirurg</h4>
+          <p>
+            “Vroeger zag ik bij ontslag alleen een vage notitie ‘thuiszorg volgt op’. Nu zie ik per probleemgebied welke bundel geactiveerd is en wie wat gaat doen. Ik durf sneller ontslag te geven, omdat ik zie dat wondzorg, mobilisatie en diabetesopvolging al klaarstaan.”
+          </p>
+        </article>
 
-      <article class="provider-quote">
-        <h4>Maatschappelijk werker / sociale dienst</h4>
-        <p>
-          “Vroeger was ik vooral brandjes aan het blussen. Nu starten we al tijdens de opname: het matchingsplatform toont
-          meteen welke thuisverpleegkundige, kinesist of ergotherapeut beschikbaar is in de buurt. Ik heb een stevig verhaal
-          naar de patiënt én naar zijn kinderen.”
-        </p>
-      </article>
+        <article class="provider-quote">
+          <h4>Afdelingsverpleegkundige</h4>
+          <p>
+            “Bij complexe patiënten verloor ik veel tijd aan telefoons en losse briefjes. Met Zorgstart zie ik in één scherm welke taken al ingepland zijn, welke nog openstaan en welke dienst ze opneemt. Ik kan mijn briefing aan de patiënt veel gerichter doen.”
+          </p>
+        </article>
 
-      <article class="provider-quote">
-        <h4>Kinesist intramuros</h4>
-        <p>
-          “Het helpt dat in Zorgstart duidelijk staat dat hij met rollator naar huis gaat en welke thuisdoelen er zijn.
-          Dan stem ik mijn oefensessies beter af op wat thuis haalbaar is.”
-        </p>
-      </article>
+        <article class="provider-quote">
+          <h4>Maatschappelijk werker / sociale dienst</h4>
+          <p>
+            “Vroeger was ik vooral brandjes aan het blussen. Nu starten we al tijdens de opname: het matchingsplatform toont meteen welke thuisverpleegkundige, kinesist of ergotherapeut beschikbaar is in de buurt. Ik heb een stevig verhaal naar de patiënt én naar zijn kinderen.”
+          </p>
+        </article>
+
+        <article class="provider-quote">
+          <h4>Kinesist intramuros</h4>
+          <p>
+            “Het helpt dat in Zorgstart duidelijk staat dat hij met rollator naar huis gaat en welke thuisdoelen er zijn. Dan stem ik mijn oefensessies beter af op wat thuis haalbaar is.”
+          </p>
+        </article>
+      </div>
+
+      <p class="section-intro" style="margin-top: 0.6rem;">
+        Intramuraal voelt men: <em>“Ontslag is geen sprong in het donker meer, maar de start van een ingepland traject.”</em>
+      </p>
     </div>
 
-    <p class="section-intro" style="margin-top: 0.6rem;">
-      Intramuraal voelt men: <em>“Ontslag is geen sprong in het donker meer, maar de start van een ingepland traject.”</em>
-    </p>
-  </div>
+    <!-- Extramuraal -->
+    <div class="journey-card">
+      <h3>Extramuraal – thuis en eerste lijn</h3>
 
-  <!-- Extramuraal -->
-  <div class="journey-card">
-    <h3>Extramuraal – thuis en eerste lijn</h3>
+      <div class="provider-experiences">
+        <article class="provider-quote">
+          <h4>Thuisverpleegkundige</h4>
+          <p>
+            “Wanneer een patiënt via Zorgstart komt, start ik niet langer ‘blind’. Ik zie de ontslagcontext, de probleemgebieden en de gekozen bundels. Ik weet meteen dat dit geen standaard inspuiting is, maar iemand met valrisico, wondzorg en een kwetsbare thuissituatie.”
+          </p>
+        </article>
 
-    <div class="provider-experiences">
-      <article class="provider-quote">
-        <h4>Thuisverpleegkundige</h4>
-        <p>
-          “Wanneer een patiënt via Zorgstart komt, start ik niet langer ‘blind’. Ik zie de ontslagcontext, de probleemgebieden
-          en de gekozen bundels. Ik weet meteen dat dit geen standaard inspuiting is, maar iemand met valrisico, wondzorg en
-          een kwetsbare thuissituatie.”
-        </p>
-      </article>
+        <article class="provider-quote">
+          <h4>Huisarts</h4>
+          <p>
+            “In plaats van een dikke ontslagbrief op vrijdagavond krijg ik een compact overzicht: probleemgebieden, zorgbundels en gepland traject. Ik zie welke afspraken er al liggen, welke medicatie‑aanpassingen voorgesteld zijn en waar ik moet bijsturen.”
+          </p>
+        </article>
 
-      <article class="provider-quote">
-        <h4>Huisarts</h4>
-        <p>
-          “In plaats van een dikke ontslagbrief op vrijdagavond krijg ik een compact overzicht: probleemgebieden, zorgbundels
-          en gepland traject. Ik zie welke afspraken er al liggen, welke medicatie‑aanpassingen voorgesteld zijn en waar ik
-          moet bijsturen.”
-        </p>
-      </article>
+        <article class="provider-quote">
+          <h4>Kinesist / ergotherapeut aan huis</h4>
+          <p>
+            “Ik zie in Zorgstart: heupfractuur, valangst, rollator en een kleine badkamer. Ik krijg niet alleen een voorschrift, maar ook het doel: binnen zes weken veilig mobiel in huis. Dat maakt mijn behandelplan veel gerichter.”
+          </p>
+        </article>
 
-      <article class="provider-quote">
-        <h4>Kinesist / ergotherapeut aan huis</h4>
-        <p>
-          “Ik zie in Zorgstart: heupfractuur, valangst, rollator en een kleine badkamer. Ik krijg niet alleen een voorschrift,
-          maar ook het doel: binnen zes weken veilig mobiel in huis. Dat maakt mijn behandelplan veel gerichter.”
-        </p>
-      </article>
+        <article class="provider-quote">
+          <h4>Apotheker</h4>
+          <p>
+            “Met het medicatieschema uit Zorgstart zie ik meteen wat er gewijzigd is tijdens de opname. Het helpt om weekdozen correct klaar te maken en helder aan de patiënt uit te leggen wat veranderd is en waarom.”
+          </p>
+        </article>
+      </div>
 
-      <article class="provider-quote">
-        <h4>Apotheker</h4>
-        <p>
-          “Met het medicatieschema uit Zorgstart zie ik meteen wat er gewijzigd is tijdens de opname. Het helpt om weekdozen
-          correct klaar te maken en helder aan de patiënt uit te leggen wat veranderd is en waarom.”
-        </p>
-      </article>
+      <p class="section-intro" style="margin-top: 0.6rem;">
+        Extramuraal voelt men: <em>“We stappen in een verhaal dat al geschreven is, in plaats van het telkens opnieuw te moeten uitvinden.”</em>
+      </p>
     </div>
+  </section>
 
-    <p class="section-intro" style="margin-top: 0.6rem;">
-      Extramuraal voelt men: <em>“We stappen in een verhaal dat al geschreven is, in plaats van het telkens opnieuw te moeten uitvinden.”</em>
+  <!-- Getuigenissen carousel -->
+  <section>
+    <h2>4. Getuigenissen</h2>
+    <p class="section-intro">
+      Een zorgplan is meer dan afspraken en taken. Het geeft patiënten en zorgverleners houvast in een kwetsbare periode.
     </p>
-  </div>
-</section>
 
+    <div class="testimonials-carousel">
+      <div class="testimonials-track">
+        <article class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar patient">P</div>
+            <div>
+              <div class="testimonial-name">Patiënt, 68 jaar</div>
+              <div class="testimonial-role">Heupfractuur – alleenwonend</div>
+            </div>
+          </div>
+          <p class="testimonial-text">
+            “Ik zag er erg tegenop om naar huis te gaan. Door het plan wist ik wie wanneer langskwam en wat ik zelf moest doen. Dat gaf mij rust en vertrouwen.”
+          </p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar nurse">V</div>
+            <div>
+              <div class="testimonial-name">Thuisverpleegkundige</div>
+              <div class="testimonial-role">Wondzorg &amp; diabetesopvolging</div>
+            </div>
+          </div>
+          <p class="testimonial-text">
+            “In Zorgstart zie ik meteen het volledige beeld: heupoperatie, diabetes, wie nog betrokken is. Zo kan ik mijn bezoeken beter plannen en sneller schakelen bij problemen.”
+          </p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar nurse">K</div>
+            <div>
+              <div class="testimonial-name">Kinesitherapeut</div>
+              <div class="testimonial-role">Thuisrevalidatie &amp; valpreventie</div>
+            </div>
+          </div>
+          <p class="testimonial-text">
+            “De combinatie van medische info en het thuisplan helpt mij om oefeningen stapsgewijs op te bouwen en realistische doelen te stellen met de patiënt.”
+          </p>
+        </article>
+      </div>
+
+      <button class="testimonial-nav prev" aria-label="Vorige getuigenis" type="button">‹</button>
+      <button class="testimonial-nav next" aria-label="Volgende getuigenis" type="button">›</button>
+
+      <div class="testimonial-dots">
+        <button class="dot active" data-index="0" aria-label="Getuigenis 1"></button>
+        <button class="dot" data-index="1" aria-label="Getuigenis 2"></button>
+        <button class="dot" data-index="2" aria-label="Getuigenis 3"></button>
+      </div>
+    </div>
+  </section>
 
 </div>
 
 <script>
+  // Tabs
   const buttons = document.querySelectorAll('.tab-btn');
   const sections = document.querySelectorAll('.plan-section');
 
@@ -818,6 +1610,115 @@
       }
     });
   });
+
+  // Accordion open/dicht
+  document.querySelectorAll('.task-item').forEach((item) => {
+    const header = item.querySelector('.task-header');
+    if (!header) return;
+    header.addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+
+  // Subtaken en status "in orde" naar patiëntenplan
+  const patientTasksList = document.querySelector('#patient-tasks-done');
+
+  function updateTaskStatus(taskId) {
+    const subtasks = document.querySelectorAll(
+      '.task-checkbox[data-task-id="' + taskId + '"]'
+    );
+    const allChecked = Array.from(subtasks).length > 0 &&
+      Array.from(subtasks).every((cb) => cb.checked);
+
+    const taskItem = document.querySelector(
+      '.task-item[data-task-id="' + taskId + '"]'
+    );
+    if (taskItem) {
+      taskItem.classList.toggle('completed', allChecked);
+      const statusLabel = taskItem.querySelector('.task-status-label');
+      if (statusLabel) {
+        statusLabel.textContent = allChecked ? 'In orde' : 'Open';
+      }
+    }
+
+    if (!patientTasksList) return;
+
+    const existingLi = patientTasksList.querySelector(
+      'li[data-task-id="' + taskId + '"]'
+    );
+
+    if (allChecked) {
+      if (!existingLi) {
+        const title = taskItem
+          ? taskItem.querySelector('.task-title')?.textContent?.trim() || 'Taak'
+          : 'Taak';
+        const li = document.createElement('li');
+        li.dataset.taskId = taskId;
+        li.textContent = title + ' – in orde';
+        patientTasksList.appendChild(li);
+      }
+    } else {
+      if (existingLi) {
+        existingLi.remove();
+      }
+    }
+  }
+
+  document.querySelectorAll('.task-checkbox').forEach((cb) => {
+    cb.addEventListener('change', () => {
+      const taskId = cb.dataset.taskId;
+      if (!taskId) return;
+      updateTaskStatus(taskId);
+    });
+  });
+
+  // Testimonials carousel
+  const track = document.querySelector('.testimonials-track');
+  const cards = document.querySelectorAll('.testimonials-track .testimonial-card');
+  const prevBtn = document.querySelector('.testimonial-nav.prev');
+  const nextBtn = document.querySelector('.testimonial-nav.next');
+  const dots = document.querySelectorAll('.testimonial-dots .dot');
+
+  let currentIndex = 0;
+
+  function getVisibleCount() {
+    return window.innerWidth >= 768 ? 2 : 1;
+  }
+
+  function updateCarousel(index) {
+    const visible = getVisibleCount();
+    const maxIndex = Math.max(0, cards.length - visible);
+    currentIndex = Math.min(Math.max(index, 0), maxIndex);
+    const offset = -(100 / visible) * currentIndex;
+    track.style.transform = 'translateX(' + offset + '%)';
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  if (prevBtn && nextBtn && track) {
+    prevBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex + 1);
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.dataset.index, 10) || 0;
+        updateCarousel(index);
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      updateCarousel(currentIndex);
+    });
+
+    updateCarousel(0);
+  }
 </script>
 
 </body>
