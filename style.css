@@ -746,3 +746,22 @@
   color: var(--text-muted);
   line-height: 1.45;
 }
+.nurseline-block {
+  background: var(--warm-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  padding: 0.7rem 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.nurseline-block h3 {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  color: var(--warm-1);
+}
+
+.nurseline-block p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-main);
+}
